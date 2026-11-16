@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misión Matemática</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Trebuchet MS', Arial, sans-serif;
+  background: linear-gradient(135deg,#c9f5ff,#fce0ff,#fff3ba);
+  color: #37345c;
+  text-align: center;
+}
+
+header {
+  background: linear-gradient(90deg,#7555e9,#ee70b5);
+  color: white;
+  padding: 25px 10px;
+}
+
+header h1 {
+  font-size: 35px;
+  margin: 5px;
+}
+
+.robot {
+  font-size: 65px;
+}
+
+nav {
+  background: #fff;
+  padding: 15px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  box-shadow: 0 3px 8px #bbb;
+}
+
+nav a {
+  color: #7555e9;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 8px;
+  display: inline-block;
+}
+
+.panel {
+  background: white;
+  max-width: 900px;
+  margin: 25px auto;
+  padding: 22px;
+  border-radius: 25px;
+  width: 92%;
+  box-shadow: 0 5px 15px #b9a8d8;
+}
+
+h2 {
+  color: #7555e9;
+}
+
+button {
+  background: #ff9e45;
+  border: none;
+  color: white;
+  padding: 13px 22px;
+  margin: 7px;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px #d77c2c;
+}
+
+button:hover {
+  transform: scale(1.06);
+}
+
+button:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+.opcion {
+  background: #55bde9;
+  box-shadow: 0 4px #328bb7;
+}
+
+.dato {
+  display: inline-block;
+  background: #fff1a8;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 5px;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.nivel {
+  display: inline-block;
+  background: #e9ddff;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 8px;
+  min-width: 150px;
+}
+
+#pregunta {
+  font-size: 32px;
+  margin: 25px;
+}
+
+#mensaje {
+  font-size: 23px;
+  font-weight: bold;
+  min-height: 45px;
+  margin: 15px;
+}
+
+.emoji {
+  font-size: 45px;
+}
+
+.juego {
+  background: #e6f8ff;
+  border: 3px dashed #62b9e9;
+  border-radius: 20px;
+  padding: 15px;
+  margin: 15px auto;
+  max-width: 550px;
+}
+
+.arrastrable {
+  display: inline-block;
+  background: #ffb7d8;
+  padding: 15px;
+  margin: 8px;
+  border-radius: 15px;
+  font-size: 25px;
+  cursor: grab;
+}
+
+.destino {
+  display: inline-block;
+  min-width: 100px;
+  min-height: 65px;
+  background: white;
+  border: 3px dashed #7555e9;
+  border-radius: 15px;
+  padding: 12px;
+  margin: 8px;
+  font-size: 25px;
+}
+
+footer {
+  background: #7555e9;
+  color: white;
+  padding: 25px;
+}
+
+#progreso {
+  height: 20px;
+  background: #ddd;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 15px;
+}
+
+#barra {
+  height: 100%;
+  width: 0%;
+  background: #55cc8a;
+  transition: .4s;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="robot">🤖</div>
+  <h1>🎮 MISIÓN MATEMÁTICA</h1>
+  <h2 style="color:white">¡Aventuras con los números!</h2>
+  <p>Aprende, juega y gana estrellas ⭐</p>
+</header>
+
+<nav>
+  <a href="#inicio">Inicio</a>
+  <a href="#niveles">Niveles</a>
+  <a href="#jugar">Jugar</a>
+  <a href="#arrastrar">Desafío</a>
+</nav>
+
+<section class="panel" id="inicio">
+  <div class="emoji">🚀🌟</div>
+  <h2>¡Hola, pequeño matemático!</h2>
+  <p>Bienvenido a una aventura donde aprenderás matemáticas jugando.</p>
+  <p>Ayuda a nuestro robot a superar todos los desafíos.</p>
+
+  <div class="dato">⭐ Estrellas: <span id="estrellas">0</span></div>
+  <div class="dato">🏆 Puntos: <span id="puntos">0</span></div>
+
+  <div id="progreso">
+    <div id="barra"></div>
+  </div>
+  <p id="avance">¡Comienza tu aventura!</p>
+</section>
+
+<section class="panel" id="niveles">
+  <h2>🗺️ Elige tu nivel</h2>
+
+  <div class="nivel">
+    <div class="emoji">🐣</div>
+    <h3>Nivel 1</h3>
+    <p>Principiante</p>
+    <button onclick="cambiarNivel(1)">Entrar</button>
+  </div>
+
+  <div class="nivel">
+    <div class="emoji">🦊</div>
+    <h3>Nivel 2</h3>
+    <p>Explorador</p>
+    <button onclick="cambiarNivel(2)">Entrar</button>
+  </div>
+
+  <div class="nivel">
+    <div class="emoji">🦁</div>
+    <h3>Nivel 3</h3>
+    <p>Campeón</p>
+    <button onclick="cambiarNivel(3)">Entrar</button>
+  </div>
+</section>
+
+<section class="panel" id="jugar">
+  <h2>🧠 Resuelve las operaciones</h2>
+  <p id="nombreNivel">Nivel 1: Principiante</p>
+
+  <div id="pregunta">¿Cuánto es 2 + 1?</div>
+
+  <div id="opciones">
+    <button class="opcion" onclick="responder(3)">3</button>
+    <button class="opcion" onclick="responder(4)">4</button>
+    <button class="opcion" onclick="responder(2)">2</button>
+  </div>
+
+  <div id="mensaje">¡Tú puedes! 💪</div>
+  <button onclick="nuevaPregunta()">Siguiente pregunta ➡️</button>
+</section>
+
+<section class="panel" id="arrastrar">
+  <h2>🎯 Juego de unir cantidades</h2>
+  <p>Arrastra cada número hasta la cantidad que le corresponde.</p>
+
+  <div class="juego">
+    <div class="arrastrable" draggable="true"
+         id="n3" data-num="3">3</div>
+    <div class="arrastrable" draggable="true"
+         id="n1" data-num="1">1</div>
+    <div class="arrastrable" draggable="true"
+         id="n2" data-num="2">2</div>
+    <hr>
+    <div>
+      🍎
+      <div class="destino" data-res="1">🍎</div>
+      <div class="destino" data-res="2">🍎🍎</div>
+      <div class="destino" data-res="3">🍎🍎🍎</div>
+    </div>
+  </div>
+
+  <div id="mensajeArrastre">¡Une los números con las cantidades!</div>
+</section>
+
+<section class="panel">
+  <h2>🏅 ¡Mis logros!</h2>
+  <div class="emoji">🏆⭐🎖️</div>
+  <p id="logros">Todavía no tienes logros. ¡Comienza a jugar!</p>
+  <button onclick="reiniciar()">Reiniciar juego</button>
+</section>
+
+<footer>
+  <h2 style="color:white">🌈 ¡Felicidades, campeón!</h2>
+  <p>Las matemáticas son divertidas cuando aprendemos jugando.</p>
+  <p>Material educativo para primer grado de primaria.</p>
+</footer>
+
+<script>
+let puntos = 0;
+let estrellas = 0;
+let nivel = 1;
+let correctas = 0;
+let respuestaActual = 3;
+let contestada = false;
+
+function sonido(tipo) {
+  try {
+    let audio = new (window.AudioContext ||
+                     window.webkitAudioContext)();
+    let frecuencias = tipo === "bien"
+      ? [523,659,784]
+      : [220,180];
+
+    frecuencias.forEach((f,i) => {
+      let oscilador = audio.createOscillator();
+      let volumen = audio.createGain();
+      oscilador.frequency.value = f;
+      oscilador.connect(volumen);
+      volumen.connect(audio.destination);
+      let inicio = audio.currentTime + i * 0.13;
+      volumen.gain.setValueAtTime(0.12,inicio);
+      volumen.gain.exponentialRampToValueAtTime(
+        0.001,inicio + 0.18);
+      oscilador.start(inicio);
+      oscilador.stop(inicio + 0.2);
+    });
+  } catch(e) {}
+}
+
+function actualizar() {
+  document.getElementById("puntos").textContent = puntos;
+  document.getElementById("estrellas").textContent = estrellas;
+
+  let porcentaje = Math.min(correctas * 10,100);
+  document.getElementById("barra").style.width =
+    porcentaje + "%";
+
+  document.getElementById("avance").textContent =
+    "Progreso: " + correctas + " respuestas correctas";
+}
+
+function cambiarNivel(n) {
+  nivel = n;
+  let nombres = ["","Principiante","Explorador",
+                 "Campeón matemático"];
+  document.getElementById("nombreNivel").textContent =
+    "Nivel " + n + ": " + nombres[n];
+
+  nuevaPregunta();
+  document.getElementById("mensaje").textContent =
+    "¡Vamos a superar este nivel! 🚀";
+}
+
+function nuevaPregunta() {
+  contestada = false;
+
+  let a, b, operacion;
+  if(nivel === 1) {
+    a = Math.floor(Math.random()*5)+1;
+    b = Math.floor(Math.random()*5)+1;
+    operacion = "+";
+  } else if(nivel === 2) {
+    a = Math.floor(Math.random()*10)+1;
+    b = Math.floor(Math.random()*a)+1;
+    operacion = Math.random() < .5 ? "+" : "-";
+  } else {
+    a = Math.floor(Math.random()*15)+5;
+    b = Math.floor(Math.random()*10)+1;
+    operacion = Math.random() < .5 ? "+" : "-";
+    if(operacion === "-" && b > a) {
+      let temporal = a;
+      a = b;
+      b = temporal;
+    }
+  }
+
+  respuestaActual = operacion === "+" ? a+b : a-b;
+
+  document.getElementById("pregunta").textContent =
+    "¿Cuánto es " + a + " " + operacion + " " + b + "?";
+
+  let opciones = [respuestaActual];
+  while(opciones.length < 3) {
+    let falso = Math.max(0,respuestaActual +
+      Math.floor(Math.random()*7)-3);
+    if(!opciones.includes(falso)) opciones.push(falso);
+  }
+
+  opciones.sort(() => Math.random()-.5);
+
+  document.getElementById("opciones").innerHTML =
+    opciones.map(x =>
+      '<button class="opcion" onclick="responder('+
+      x+')">'+x+'</button>').join("");
+
+  document.getElementById("mensaje").textContent =
+    "¡Piensa y elige tu respuesta! 🧠";
+}
+
+function responder(valor) {
+  if(contestada) return;
+  contestada = true;
+
+  if(valor === respuestaActual) {
+    puntos += 10;
+    estrellas++;
+    correctas++;
+
+    document.getElementById("mensaje").textContent =
+      "🎉 ¡Excelente! Ganaste 10 puntos y una estrella ⭐";
+    sonido("bien");
+  } else {
+    document.getElementById("mensaje").textContent =
+      "😊 ¡Buen intento! Sigue practicando.";
+    sonido("mal");
+  }
+
+  actualizar();
+
+  document.getElementById("logros").textContent =
+    estrellas >= 10
+    ? "🏆 ¡Eres un campeón matemático!"
+    : estrellas >= 5
+    ? "🌟 ¡Vas muy bien!"
+    : "¡Sigue jugando para conseguir estrellas!";
+}
+
+document.querySelectorAll(".arrastrable").forEach(item => {
+  item.addEventListener("dragstart", e => {
+    e.dataTransfer.setData("text",item.dataset.num);
+  });
+});
+
+let aciertosArrastre = 0;
+
+document.querySelectorAll(".destino").forEach(destino => {
+  destino.addEventListener("dragover", e => e.preventDefault());
+
+  destino.addEventListener("drop", e => {
+    e.preventDefault();
+
+    let numero = e.dataTransfer.getData("text");
+
+    if(numero === destino.dataset.res &&
+       !destino.dataset.hecho) {
+
+      destino.dataset.hecho = "si";
+      destino.style.background = "#b8ffd4";
+      destino.innerHTML += " ✔️";
+      document.getElementById("n"+numero).style.opacity = "0.4";
+      aciertosArrastre++;
+
+      puntos += 10;
+      estrellas++;
+      actualizar();
+      sonido("bien");
+
+      document.getElementById("mensajeArrastre").textContent =
+        "¡Muy bien! 🎉";
+
+      if(aciertosArrastre === 3) {
+        document.getElementById("mensajeArrastre").textContent =
+          "🏆 ¡Completaste el desafío!";
+      }
+    } else if(numero) {
+      sonido("mal");
+      document.getElementById("mensajeArrastre").textContent =
+        "¡Inténtalo nuevamente! 💪";
+    }
+  });
+});
+
+function reiniciar() {
+  puntos = 0;
+  estrellas = 0;
+  correctas = 0;
+  nivel = 1;
+  aciertosArrastre = 0;
+
+  document.querySelectorAll(".destino").forEach(d => {
+    d.dataset.hecho = "";
+    d.style.background = "white";
+    d.innerHTML = d.dataset.res == "1" ? "🍎" :
+      d.dataset.res == "2" ? "🍎🍎" : "🍎🍎🍎";
+  });
+
+  document.querySelectorAll(".arrastrable").forEach(n => {
+    n.style.opacity = "1";
+  });
+
+  document.getElementById("mensajeArrastre").textContent =
+    "¡Une los números con las cantidades!";
+
+  document.getElementById("logros").textContent =
+    "¡Comienza una nueva aventura!";
+
+  actualizar();
+  cambiarNivel(1);
+}
+
+actualizar();
+nuevaPregunta();
+</script>
+
+</body>
+</html>
